@@ -1,60 +1,79 @@
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * =======================================================
- * MAIN CLASS - App (Use Case 11: Validate Train ID & Cargo Codes)
+ * MAIN CLASS - App (Use Case 12: Safety Compliance Check)
  * =======================================================
  * * Description:
- * This class ensures that Train IDs and Cargo Codes follow
- * strict business rules using Regular Expressions (Regex).
+ * This class validates whether a train's goods bogies adhere
+ * to safety rules (e.g., Cylindrical bogies only carry Petroleum).
  * * * At this stage, the application:
- * - Defines regex patterns for identifiers
- * - Compiles patterns into Pattern objects
- * - Validates input using Matcher.matches()
- * - Rejects malformed data to ensure integrity
- * * * This maps format enforcement using Regex.
+ * - Creates a List of GoodsBogie objects
+ * - Converts list to a stream
+ * - Uses allMatch() to verify safety constraints
+ * - Reports whether the train is safe to depart
+ * * * This maps rule enforcement using Stream allMatch.
  * * * @author Developer
- * @version 11.0
+ * @version 12.0
  */
 public class App {
+
+    // Model for Goods Bogies
+    static class GoodsBogie {
+        String type;
+        String cargo;
+
+        GoodsBogie(String type, String cargo) {
+            this.type = type;
+            this.cargo = cargo;
+        }
+
+        @Override
+        public String toString() {
+            return "GoodsBogie{type='" + type + "', cargo='" + cargo + "'}";
+        }
+    }
 
     public static void main(String[] args) {
         // Header Display
         System.out.println("=========================================");
-        System.out.println(" UC11 - Validate Train ID & Cargo Codes (Regex) ");
+        System.out.println(" UC12 - Safety Compliance Check (allMatch) ");
         System.out.println("=========================================\n");
 
-        // 1. Define Regex Patterns
-        // TRN-\\d{4} matches "TRN-" followed by exactly 4 digits
-        String trainIdRegex = "TRN-\\d{4}";
-        // PET-[A-Z]{2} matches "PET-" followed by exactly 2 uppercase letters
-        String cargoCodeRegex = "PET-[A-Z]{2}";
+        // Create List of goods bogies
+        List<GoodsBogie> goodsConsist = new ArrayList<>();
+        goodsConsist.add(new GoodsBogie("Open", "Coal"));
+        goodsConsist.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsConsist.add(new GoodsBogie("Box", "Grain"));
+        // Uncomment the line below to trigger a safety violation:
+        // goodsConsist.add(new GoodsBogie("Cylindrical", "Coal"));
 
-        // 2. Compile Patterns
-        Pattern trainPattern = Pattern.compile(trainIdRegex);
-        Pattern cargoPattern = Pattern.compile(cargoCodeRegex);
+        // Display current goods consist
+        System.out.println("Checking Goods Train Consist:");
+        goodsConsist.forEach(System.out::println);
 
-        // 3. Test Cases (Valid and Invalid)
-        String[] testTrainIds = {"TRN-1234", "TRAIN12", "TRN-123", "TRN-12345"};
-        String[] testCargoCodes = {"PET-AB", "PET-ab", "PET123", "PET-XYZ"};
+        // ---- Stream Safety Logic ----
+        // Rule: IF type is "Cylindrical", THEN cargo MUST BE "Petroleum"
+        // allMatch returns true only if EVERY element satisfies the predicate
+        boolean isSafe = goodsConsist.stream().allMatch(b -> {
+            if (b.type.equalsIgnoreCase("Cylindrical")) {
+                return b.cargo.equalsIgnoreCase("Petroleum");
+            }
+            return true; // Other bogies are considered safe for any cargo here
+        });
 
-        // Validate Train IDs
-        System.out.println("--- Train ID Validation ---");
-        for (String id : testTrainIds) {
-            Matcher matcher = trainPattern.matcher(id);
-            boolean isValid = matcher.matches();
-            System.out.println("Input: " + id + " -> " + (isValid ? "VALID" : "INVALID"));
+        // Display the Validation Result
+        System.out.println("\n-----------------------------------------");
+        if (isSafe) {
+            System.out.println("STATUS: TRAIN IS SAFETY COMPLIANT");
+            System.out.println("Action: Departure approved.");
+        } else {
+            System.out.println("STATUS: SAFETY VIOLATION DETECTED!");
+            System.out.println("Action: Train halted for cargo inspection.");
         }
+        System.out.println("-----------------------------------------");
 
-        // Validate Cargo Codes
-        System.out.println("\n--- Cargo Code Validation ---");
-        for (String code : testCargoCodes) {
-            Matcher matcher = cargoPattern.matcher(code);
-            boolean isValid = matcher.matches();
-            System.out.println("Input: " + code + " -> " + (isValid ? "VALID" : "INVALID"));
-        }
-
-        System.out.println("\nUC11 validation operations completed...");
+        System.out.println("\nUC12 safety operations completed...");
     }
 }
