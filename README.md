@@ -1,1 +1,4 @@
 # TrainConsistManagementApp
+
+
+The Train Consist Management System is a console-based application built using Core Java to demonstrate the practical use of data structures in solving real-world railway operations problems. It focuses on efficiently managing train coach composition through dynamic structures like linked lists and collections, enabling operations such as adding, removing, reordering, and validating coaches while preventing duplication and ensuring consistency. The project follows an incremental, app-based learning approach where each feature introduces key concepts like object-oriented design, data handling, and system scalability. With minimal UI and a strong emphasis on logic, structure, and maintainability, this application helps bridge the gap between theoretical knowledge and real-world software design.
