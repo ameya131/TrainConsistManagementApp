@@ -1,42 +1,45 @@
 /**
  * =======================================================
- * UC18 - Linear Search (Manual Search)
+ * UC20 - Exception Handling in Search
  * =======================================================
  * Description:
- * This class demonstrates how to search for a specific Bogie ID
- * within an array using the Linear Search algorithm.
+ * This class demonstrates defensive programming by throwing
+ * an IllegalStateException if a search is attempted on an
+ * empty consist (array).
  */
 
 public class App {
     public static void main(String[] args) {
         System.out.println("==============================================");
-        System.out.println("          UC18 - Bogie ID Search             ");
+        System.out.println("      UC20 - Search Exception Handling        ");
         System.out.println("==============================================\n");
 
-        // 1. The dataset (Array of Bogie IDs)
-        String[] bogieIDs = {"BG101", "BG205", "BG309"};
+        // 1. Scenario: An empty array (The train has no bogies attached)
+        String[] bogieIDs = {};
+        String searchKey = "BG101";
 
-        // 2. The item we are looking for
-        String searchKey = "BG205";
-
-        boolean isFound = false;
-
-        // 3. Linear Search Logic
-        // We iterate through each element 's' in the array
-        for (String s : bogieIDs) {
-            if (s.equals(searchKey)) {
-                isFound = true;
-                break; // Exit the loop early as we've found our target
+        try {
+            // 2. Pre-condition Check (Defensive Programming)
+            if (bogieIDs.length == 0) {
+                // Throwing a built-in RuntimeException to signal an invalid state
+                throw new IllegalStateException("Search Error: No bogies available in the consist.");
             }
+
+            // 3. Search logic (will only execute if the array is NOT empty)
+            boolean isFound = false;
+            for (String s : bogieIDs) {
+                if (s.equals(searchKey)) {
+                    isFound = true;
+                    break;
+                }
+            }
+            System.out.println("Bogie Found: " + isFound);
+
+        } catch (IllegalStateException e) {
+            // 4. Gracefully handling the exception
+            System.err.println("ALERT: " + e.getMessage());
         }
 
-        // 4. Output the result
-        if (isFound) {
-            System.out.println("Result: Bogie " + searchKey + " was found in the consist.");
-        } else {
-            System.out.println("Result: Bogie " + searchKey + " not found.");
-        }
-
-        System.out.println("\nUC18: Search operation completed.");
+        System.out.println("\nUC20: Defensive search check completed.");
     }
 }
