@@ -1,10 +1,10 @@
 /**
  * =======================================================
- * UC16 - Bubble Sort (Manual Array Sorting)
+ * UC19 - Binary Search (Divide and Conquer)
  * =======================================================
  * Description:
- * This class implements the Bubble Sort algorithm to sort
- * an array of bogie capacities in ascending order.
+ * This class demonstrates searching for a Bogie ID using
+ * Binary Search. It splits the search area in half each time.
  */
 
 import java.util.Arrays;
@@ -12,35 +12,46 @@ import java.util.Arrays;
 public class App {
     public static void main(String[] args) {
         System.out.println("==============================================");
-        System.out.println("          UC16 - Bogie Capacity Sort          ");
+        System.out.println("          UC19 - Binary Search Logic          ");
         System.out.println("==============================================\n");
 
-        // Sample array of bogie capacities
-        int[] capacities = {72, 56, 24, 70, 60};
+        // 1. Unsorted dataset
+        String[] bogieIDs = {"BG309", "BG101", "BG205"};
 
-        System.out.println("Original Capacities: " + Arrays.toString(capacities));
+        // 2. IMPORTANT: Binary search requires a sorted array
+        Arrays.sort(bogieIDs);
+        System.out.println("Sorted IDs for Search: " + Arrays.toString(bogieIDs));
 
-        // Bubble Sort Algorithm
-        // The outer loop controls the number of passes
-        for (int i = 0; i < capacities.length; i++) {
+        String key = "BG205";
+        boolean found = false;
 
-            // The inner loop performs the adjacent comparisons
-            // We use 'capacities.length - 1' to avoid ArrayIndexOutOfBounds
-            for (int j = 0; j < capacities.length - 1; j++) {
+        // 3. Define the search boundaries
+        int low = 0;
+        int high = bogieIDs.length - 1;
 
-                // If the current element is greater than the next, swap them
-                if (capacities[j] > capacities[j + 1]) {
-                    // Temporary variable to hold the value during the swap
-                    int temp = capacities[j];
-                    capacities[j] = capacities[j + 1];
-                    capacities[j + 1] = temp;
-                }
+        // 4. Binary Search Loop
+        while (low <= high) {
+            // Calculate the middle index
+            int mid = (low + high) / 2;
+
+            // compareTo returns 0 if match, < 0 if before key, > 0 if after key
+            int cmp = bogieIDs[mid].compareTo(key);
+
+            if (cmp == 0) {
+                found = true;
+                break; // Target found!
+            } else if (cmp < 0) {
+                // If mid is less than key, ignore the left half
+                low = mid + 1;
+            } else {
+                // If mid is greater than key, ignore the right half
+                high = mid - 1;
             }
         }
 
-        // Display the final sorted array
-        System.out.println("Sorted Capacities:   " + Arrays.toString(capacities));
+        System.out.println("Search Key: " + key);
+        System.out.println("Found: " + found);
 
-        System.out.println("\nUC16: Sorting operation completed successfully.");
+        System.out.println("\nUC19: Binary search operation completed.");
     }
 }
