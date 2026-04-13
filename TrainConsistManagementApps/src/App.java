@@ -1,52 +1,46 @@
 /**
  * =======================================================
- * UC14 - Custom Exception (Invalid Capacity)
+ * UC16 - Bubble Sort (Manual Array Sorting)
  * =======================================================
  * Description:
- * This class demonstrates how to create and throw a custom
- * exception when a Bogie's capacity is invalid (<= 0).
+ * This class implements the Bubble Sort algorithm to sort
+ * an array of bogie capacities in ascending order.
  */
 
-// Custom Exception Class
-class InvalidCapacityException extends Exception {
-    public InvalidCapacityException(String msg) {
-        super(msg);
-    }
-}
+import java.util.Arrays;
 
-// Bogie model with validation logic
-class Bogie {
-    int capacity;
-
-    Bogie(int capacity) throws InvalidCapacityException {
-        // Business Rule: Capacity must be a positive integer
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Capacity must be > 0. Provided: " + capacity);
-        }
-        this.capacity = capacity;
-    }
-}
-
-// Main Execution Class
 public class App {
     public static void main(String[] args) {
         System.out.println("==============================================");
-        System.out.println("       UC14 - Custom Exception Testing        ");
+        System.out.println("          UC16 - Bogie Capacity Sort          ");
         System.out.println("==============================================\n");
 
-        try {
-            // Attempting to create a Bogie with invalid (negative) capacity
-            System.out.println("Attempting to create a Bogie with capacity: -10...");
-            Bogie b = new Bogie(-10);
+        // Sample array of bogie capacities
+        int[] capacities = {72, 56, 24, 70, 60};
 
-            // This line will not execute if the exception is thrown
-            System.out.println("Bogie created successfully with capacity: " + b.capacity);
+        System.out.println("Original Capacities: " + Arrays.toString(capacities));
 
-        } catch (InvalidCapacityException e) {
-            // Handling the custom exception
-            System.err.println("Caught Custom Exception: " + e.getMessage());
+        // Bubble Sort Algorithm
+        // The outer loop controls the number of passes
+        for (int i = 0; i < capacities.length; i++) {
+
+            // The inner loop performs the adjacent comparisons
+            // We use 'capacities.length - 1' to avoid ArrayIndexOutOfBounds
+            for (int j = 0; j < capacities.length - 1; j++) {
+
+                // If the current element is greater than the next, swap them
+                if (capacities[j] > capacities[j + 1]) {
+                    // Temporary variable to hold the value during the swap
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
         }
 
-        System.out.println("\nUC14 execution completed.");
+        // Display the final sorted array
+        System.out.println("Sorted Capacities:   " + Arrays.toString(capacities));
+
+        System.out.println("\nUC16: Sorting operation completed successfully.");
     }
 }
