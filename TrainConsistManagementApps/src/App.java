@@ -1,46 +1,42 @@
 /**
  * =======================================================
- * UC16 - Bubble Sort (Manual Array Sorting)
+ * UC18 - Linear Search (Manual Search)
  * =======================================================
  * Description:
- * This class implements the Bubble Sort algorithm to sort
- * an array of bogie capacities in ascending order.
+ * This class demonstrates how to search for a specific Bogie ID
+ * within an array using the Linear Search algorithm.
  */
-
-import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
         System.out.println("==============================================");
-        System.out.println("          UC16 - Bogie Capacity Sort          ");
+        System.out.println("          UC18 - Bogie ID Search             ");
         System.out.println("==============================================\n");
 
-        // Sample array of bogie capacities
-        int[] capacities = {72, 56, 24, 70, 60};
+        // 1. The dataset (Array of Bogie IDs)
+        String[] bogieIDs = {"BG101", "BG205", "BG309"};
 
-        System.out.println("Original Capacities: " + Arrays.toString(capacities));
+        // 2. The item we are looking for
+        String searchKey = "BG205";
 
-        // Bubble Sort Algorithm
-        // The outer loop controls the number of passes
-        for (int i = 0; i < capacities.length; i++) {
+        boolean isFound = false;
 
-            // The inner loop performs the adjacent comparisons
-            // We use 'capacities.length - 1' to avoid ArrayIndexOutOfBounds
-            for (int j = 0; j < capacities.length - 1; j++) {
-
-                // If the current element is greater than the next, swap them
-                if (capacities[j] > capacities[j + 1]) {
-                    // Temporary variable to hold the value during the swap
-                    int temp = capacities[j];
-                    capacities[j] = capacities[j + 1];
-                    capacities[j + 1] = temp;
-                }
+        // 3. Linear Search Logic
+        // We iterate through each element 's' in the array
+        for (String s : bogieIDs) {
+            if (s.equals(searchKey)) {
+                isFound = true;
+                break; // Exit the loop early as we've found our target
             }
         }
 
-        // Display the final sorted array
-        System.out.println("Sorted Capacities:   " + Arrays.toString(capacities));
+        // 4. Output the result
+        if (isFound) {
+            System.out.println("Result: Bogie " + searchKey + " was found in the consist.");
+        } else {
+            System.out.println("Result: Bogie " + searchKey + " not found.");
+        }
 
-        System.out.println("\nUC16: Sorting operation completed successfully.");
+        System.out.println("\nUC18: Search operation completed.");
     }
 }
